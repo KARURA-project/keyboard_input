@@ -5,14 +5,12 @@ from rclpy.node import Node
 
 from keyboard_input_msgs.msg import PressedKeys
 
-from .readers import EvdevKeyboardReader, PygameKeyboardReader
-
 
 class KeyboardNode(Node):
     def __init__(self) -> None:
         super().__init__("keyboard_node")
 
-        self.declare_parameter("topic_name", "pressed_keys")
+        self.declare_parameter("topic_name", "/keyboard/pressed_keys")
         self.declare_parameter("publish_hz", 20.0)
         self.declare_parameter("backend", "evdev")
         self.declare_parameter("device_path", "")
@@ -25,7 +23,7 @@ class KeyboardNode(Node):
         self._log_output = bool(self.get_parameter("log_output").value)
 
         if publish_hz <= 0.0:
-            self.get_logger().warn("publish_hz must be > 0.0. Using default value 20.0.")
+            self.get_logger().warn("publish_hz must be > 0.0．20.0 Hz に戻します．")
             publish_hz = 20.0
 
         self._pub = self.create_publisher(PressedKeys, topic_name, 10)
@@ -43,12 +41,14 @@ class KeyboardNode(Node):
                     "evdev backend requires device_path．"
                     "Example: --ros-args -p backend:=evdev -p device_path:=/dev/input/event3"
                 )
+            from .readers.evdev_reader import EvdevKeyboardReader
             return EvdevKeyboardReader(
                 device_path=device_path,
                 logger=self.get_logger(),
             )
 
         if backend == "pygame":
+            from .readers.pygame_reader import PygameKeyboardReader
             return PygameKeyboardReader(
                 logger=self.get_logger(),
             )
