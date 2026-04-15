@@ -23,7 +23,7 @@ class KeyboardNode(Node):
         self._log_output = bool(self.get_parameter("log_output").value)
 
         if publish_hz <= 0.0:
-            self.get_logger().warn("publish_hz must be > 0.0．20.0 Hz に戻します．")
+            self.get_logger().warn("publish_hz must be > 0.0. Setting to default value 20.0.")
             publish_hz = 20.0
 
         self._pub = self.create_publisher(PressedKeys, topic_name, 10)
