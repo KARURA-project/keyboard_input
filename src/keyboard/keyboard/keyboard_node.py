@@ -10,7 +10,7 @@ class KeyboardNode(Node):
     def __init__(self) -> None:
         super().__init__("keyboard_node")
 
-        self.declare_parameter("topic_name", "/keyboard/pressed_keys")
+        self.declare_parameter("topic_name", "key")
         self.declare_parameter("publish_hz", 20.0)
         self.declare_parameter("backend", "evdev")
         self.declare_parameter("device_path", "")
